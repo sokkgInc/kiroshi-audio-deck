@@ -1,0 +1,4 @@
+{
+  "version": "9.0.1",
+  "notes": "First update delivery test. Adds only a harmless text marker to verify the built-in updater. Does not modify voice playback, ambience, extension, or settings."
+}
