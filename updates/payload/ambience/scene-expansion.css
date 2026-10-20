@@ -1,0 +1,18 @@
+/* KIROSHI / ATMOSPHERE ATLAS v9.1.0 — additive responsive scene browsing */
+.atlas-toolbar{margin:12px 0 3px;padding:12px;border:1px solid #2c5661;background:#102630}
+.atlas-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.atlas-kicker{font:700 .64rem "Bahnschrift","Segoe UI",sans-serif;letter-spacing:.14em;color:#a4dce0}
+.atlas-kicker strong{font-weight:650;color:#61e4df;margin-left:5px}
+.atlas-search{display:flex;align-items:center;gap:9px;font-size:.58rem;color:#86b7c0;font-weight:700;letter-spacing:.1em}
+.atlas-search input,.atlas-editor-search{background:#0a1820;color:#eaf8f9;border:1px solid #365c66;border-radius:0;outline-offset:2px;outline-color:#5de4e6;padding:10px 11px;font:500 .73rem "Bahnschrift","Segoe UI",sans-serif;letter-spacing:.04em;min-width:210px}
+.atlas-search input::placeholder,.atlas-editor-search::placeholder{color:#7a9daa}
+.atlas-search input:focus,.atlas-editor-search:focus{border-color:#74e3e9}
+.atlas-filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.atlas-filter{cursor:pointer;background:#132e37;color:#a3c6cd;border:1px solid #30545f;padding:8px 9px;min-height:35px;letter-spacing:.065em;font:700 .60rem "Bahnschrift","Segoe UI",sans-serif}
+.atlas-filter:hover{border-color:#74dfe3;color:#e8ffff}
+.atlas-filter.selected{background:#20515c;color:#eafcfc;border-color:#72dcde;box-shadow:inset 2px 0 #76e8e3}
+.atlas-empty{margin:10px 0 0;color:#a7bfca;font-size:.72rem}
+.atlas-editor-search{width:100%;margin:15px 0 0;font-size:.8rem}
+.preset:focus-visible,.atlas-filter:focus-visible{outline:2px solid #8beded;outline-offset:2px}
+@media(max-width:760px){.atlas-toolbar{padding:9px}.atlas-top{align-items:stretch}.atlas-search{flex:1 1 100%}.atlas-search input{min-width:0;flex:1;width:100%}.atlas-filter{font-size:.58rem;padding:7px 8px}}
+@media(max-width:420px){.atlas-kicker{font-size:.58rem}.atlas-filters{gap:4px}.atlas-filter{min-height:32px;font-size:.53rem;padding:6px 7px}}
