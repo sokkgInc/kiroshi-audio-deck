@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09080a">
+  <title>Night City Ambiance HUD</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="corpo-theme.css">
+  <link rel="stylesheet" href="kiroshi-ambience.css">
+  <link rel="stylesheet" href="scene-expansion.css">
+</head>
+<body>
+  <main class="hud" aria-label="Night City ambiance player">
+    <header class="topbar">
+      <div><span class="eyebrow">KIROSHI // AUDIO LAYER</span><h1>NIGHT CITY <em>AMBIANCE</em></h1></div>
+      <div class="connection"><i></i> LOCAL / READY</div>
+    </header>
+    <section class="now-playing" aria-live="polite">
+      <span class="eyebrow">ACTIVE ENVIRONMENT</span>
+      <div class="scene-name" id="sceneName">NIGHT STREETS</div>
+      <div class="scene-meta"><p id="sceneCode">AMBIENCE: NIGHT_STREETS_RAIN</p><span id="trackCount">3 SOURCES / RANDOM START</span></div>
+    </section>
+    <section class="controls" aria-label="Playback controls">
+      <button class="control" id="playPause" type="button" aria-label="Play ambiance"><span id="playIcon">▶</span><span id="playText">PLAY</span></button>
+      <button class="control secondary" id="fadeOut" type="button">FADE OUT</button>
+      <label class="volume">VOL <input id="volume" type="range" min="0" max="100" value="55" aria-label="Volume"><output id="volumeValue">55%</output></label>
+    </section>
+    <section class="player-shell" aria-label="Visible YouTube player">
+      <div id="playerNotice" class="player-notice">Select a scene to load its visible YouTube player.</div>
+      <div id="ytPlayer"></div>
+    </section>
+    <section class="preset-panel" aria-label="Scene presets">
+      <div class="section-heading"><span>SCENE MATRIX</span><small>CLICK TO PLAY / SWITCH</small></div>
+      <div class="preset-grid" id="presetGrid"></div>
+    </section>
+    <section class="utility-row">
+      <button class="link-button" id="openEditor" type="button">ADD YOUTUBE LINKS</button>
+      <button class="link-button" id="copyTag" type="button">COPY SCENE TAG</button>
+      <span id="status" role="status">LINKS SAVED LOCALLY</span>
+    </section>
+  </main>
+  <dialog id="editor">
+    <form method="dialog" id="editorForm">
+      <header><span class="eyebrow">LOCAL CONFIGURATION</span><h2>ADDITIONAL YOUTUBE LINKS</h2><p>Your original scene links are protected. Add as many extra public YouTube URLs as you like, one per line; they are mixed into the pool and stored only in this browser.</p></header>
+      <div id="urlFields" class="url-fields"></div>
+      <footer><button class="control secondary" value="cancel" type="button" id="cancelEditor">CANCEL</button><button class="control" value="default" type="submit">SAVE ADDITIONS</button></footer>
+    </form>
+  </dialog>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="app.js"></script>
+  <script src="scene-expansion.js"></script>
+  <script src="corpo-lighting.js"></script>
+</body>
+</html>
