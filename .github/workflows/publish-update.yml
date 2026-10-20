@@ -1,0 +1,87 @@
+name: Publish approved Audio Deck update
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'updates/release.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kiroshi-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out approved release source
+        uses: actions/checkout@v4
+      - name: Validate and package frontend-only update
+        id: package
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, re, sys, zipfile, os
+          root=pathlib.Path("updates")
+          spec=json.loads((root/"release.json").read_text(encoding="utf-8"))
+          version=spec.get("version")
+          if not isinstance(version,str) or not re.fullmatch(r"\d+\.\d+\.\d+", version):
+              sys.exit("Version must be numeric MAJOR.MINOR.PATCH")
+          notes=spec.get("notes","")
+          if not isinstance(notes,str) or not notes.strip() or len(notes)>5000:
+              sys.exit("Nonempty release notes required")
+          allowed_ext={".html",".css",".js",".png",".jpg",".jpeg",".ico",".svg",".md",".txt",".wav"}
+          folder=root/"payload"
+          files=sorted(p for p in folder.rglob("*") if p.is_file())
+          if not files or len(files)>250:
+              sys.exit("Expected 1-250 frontend files")
+          seen=set()
+          total=0
+          for p in files:
+              if p.is_symlink():
+                  sys.exit("Symlinks not allowed")
+              rel=p.relative_to(folder).as_posix()
+              if not (rel.startswith("voice-link/public/") or rel.startswith("ambience/")):
+                  sys.exit(f"Forbidden update target: {rel}")
+              if not re.fullmatch(r"[A-Za-z0-9_./-]+",rel) or ".." in rel.split("/"):
+                  sys.exit(f"Unsafe file path: {rel}")
+              if p.suffix.lower() not in allowed_ext:
+                  sys.exit(f"Forbidden file extension: {rel}")
+              if rel.lower() in seen:
+                  sys.exit(f"Case-colliding path: {rel}")
+              seen.add(rel.lower())
+              size=p.stat().st_size
+              total+=size
+              if size>20*1024*1024 or total>80*1024*1024:
+                  sys.exit("Unpacked contents exceed limits")
+          with zipfile.ZipFile("Kiroshi_Audio_Deck_Update.zip","w",zipfile.ZIP_DEFLATED,compresslevel=8) as z:
+              for p in files:
+                  z.write(p,p.relative_to(folder).as_posix())
+          if not (100<=pathlib.Path("Kiroshi_Audio_Deck_Update.zip").stat().st_size<=30*1024*1024):
+              sys.exit("Invalid release archive size")
+          pathlib.Path("RELEASE_NOTES.txt").write_text(notes+"\n",encoding="utf-8")
+          with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as out:
+              out.write(f"tag=v{version}\n")
+          print(f"Validated {len(files)} frontend files for v{version}")
+          PY
+      - name: Ensure version is not already published
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${{ steps.package.outputs.tag }}" >/dev/null 2>&1; then
+            echo 'Release already exists; immutable versions cannot be overwritten.' >&2
+            exit 1
+          fi
+      - name: Publish immutable numbered release and digest asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.package.outputs.tag }}" ./Kiroshi_Audio_Deck_Update.zip \
+            --title "Kiroshi Audio Deck ${{ steps.package.outputs.tag }}" \
+            --notes-file RELEASE_NOTES.txt \
+            --latest
