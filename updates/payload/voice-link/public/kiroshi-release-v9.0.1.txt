@@ -1,0 +1,7 @@
+KIROSHI AUDIO DECK // RELEASE DELIVERY TEST
+Version: 9.0.1
+This is a harmless static verification marker.
+The update changes no audio behavior, no extension behavior, and no settings.
+After applying the update and restarting the deck, open
+http://127.0.0.1:3131/kiroshi-release-v9.0.1.txt
+to confirm delivery.
