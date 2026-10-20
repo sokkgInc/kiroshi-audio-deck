@@ -1,4 +1,4 @@
 {
-  "version": "9.0.1",
-  "notes": "First update delivery test. Adds only a harmless text marker to verify the built-in updater. Does not modify voice playback, ambience, extension, or settings."
+  "version": "9.1.0",
+  "notes": "Atmosphere Atlas — adds 32 cyberpunk scene presets organized into Streets, Interiors, Nightlife, Transit, Outskirts, and High Alert. Adds scene search, category filters, and editor search. The original six presets and all locally saved YouTube links are retained. Some third-party YouTube videos may be unavailable or disallow embedding."
 }
