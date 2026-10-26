@@ -14,38 +14,27 @@
   const atlas = [
     ["kabuki","KABUKI MARKET","HAWKERS / BAZAAR / CHATTER","streets","NYHN6HUxKnQ"],
     ["japantown","JAPANTOWN","ADVERTS / FOOTSTEPS / AIR TRAFFIC","streets","JYc_cOvPfz4"],
-    ["bazaar","BLACK MARKET","VENDORS / CROWDS / STALLS","streets","P4RJxb_UgxQ"],
-    ["westbrook","WESTBROOK RAIN","WET ROAD / CROSSWALKS / SIRENS","streets","hKq7kqtS9ts"],
-    ["alley","BACK ALLEYS","SIDE STREETS / NEON / DISTANCE","streets","hKq7kqtS9ts"],
+    ["alley","RAINY ALLEYWAY","NIGHT CITY / RAIN / ALLEY","streets","ZNwtLMv5rrA"],
     ["foodstall","LATE-NIGHT RAMEN","AWNING RAIN / NEON / LO-FI","streets","UkhoVwz3FoI"],
     ["rooftop","ROOFTOP SHELTER","RAIN / SKYLINE / TRAFFIC","streets","hruZzkUPF08"],
-    ["dogtown","DOGTOWN","OUTSIDE CLUB / EDGEZONE / BASS","streets","HOMt0qKIoYc"],
-    ["waterfront","CITY WATERFRONT","PIERS / BRIDGES / PEDESTRIANS","streets","tUNQL3KVUqA"],
     ["districtwalk","CITY DISTRICTS","LONG WALK / MANY NEIGHBORHOODS","streets","tUNQL3KVUqA"],
     ["judyapt","RAINY APARTMENT","WINDOW RAIN / INDOORS / REST","interiors","NXfcw3HHd-c"],
     ["cybercafe","CYBER CAFE","NEON RAIN / QUIET TABLES / DEEP REST","interiors","5QH6iPGN1OQ"],
     ["controlroom","RAINY CONTROL ROOM","CONSOLE HUM / STORM / FOCUS","interiors","878qiuOtQM4"],
     ["hacker","NETRUNNER DEN","STATIC / TERMINALS / ELECTRONICS","interiors","4W_WW2Yase4"],
-    ["server","SERVER ROOM","PROCESSORS / TECH HUM / DIGITAL","interiors","4W_WW2Yase4"],
     ["hideout","HIDDEN SAFEHOUSE","QUIET / SCREENS / CITY RAIN","interiors","CKpSc0LB3DI"],
-    ["medtech","MEDTECH LAB","STERILE TECH / ELECTRONIC HUM","interiors","4W_WW2Yase4"],
-    ["skybridge","EMPTY SKYBRIDGE","VENTILATION / SKYLINE / DRONE","interiors","Eq2uAtvHQ3c"],
+    ["skybridge","SKYBRIDGE DRONE","SYNTHWAVE / CALM DRONE / SLEEP","interiors","Eq2uAtvHQ3c"],
     ["warehouse","WAREHOUSE DOCK","RAIN / INDUSTRIAL / PORT","interiors","h0j2COERtjA"],
     ["lizzies","LIZZIE'S BAR","CROWD / BASS / BAR SOUNDS","nightlife","NXCUJ2-n8Tk"],
     ["konpeki","LUXURY HOTEL BAR","LOUNGE / DRINKS / CORPO MUSIC","nightlife","KdLv_hlfoWs"],
     ["underground","UNDERGROUND CLUB","BASS / DARK SYNTH / NIGHTLIFE","nightlife","_hPOtH3vVsc"],
-    ["clubexterior","OUTSIDE THE CLUB","MUFFLED BASS / NIGHT STREETS","nightlife","HOMt0qKIoYc"],
     ["metro","NCART METRO","TRAIN RIDE / RAIN / CITY","transit","k9DuPxFQ7HQ"],
-    ["nightdrive","NIGHT DRIVE","ROAD / TRAFFIC / RAIN","transit","hKq7kqtS9ts"],
+    ["nightdrive","RAINY NIGHT DRIVE","FIRST-PERSON DRIVE / NIGHT CITY / RAIN","transit","crJLuExSD5M"],
     ["busstop","JUNKYARD BUS STOP","WIND / DISTANT CITY / WAITING","transit","Cyq4s6gFx_o"],
-    ["aerodyne","AERIAL COCKPIT","ENGINES / DEEP HUM / HEIGHT","transit","j5wWSKqlYp8"],
+    ["aerodyne","FUTURISTIC COCKPIT","SCI-FI / COCKPIT / SLEEP AMBIENCE","transit","j5wWSKqlYp8"],
     ["nomad","NOMAD CAMP","CAMPFIRE / GUITAR / CRICKETS","outskirts","ip-j8dCJ6dY"],
     ["junkyard","SCRAPYARD","SALVAGE / METAL / WASTELAND","outskirts","riaRLSTk2jk"],
-    ["powerstation","ABANDONED STATION","RAIN / POWER / ISOLATION","outskirts","3Voqc1nNCPc"],
-    ["wasteland","WASTELAND STOP","WIND / EMPTY ROADS / NIGHT","outskirts","Cyq4s6gFx_o"],
-    ["raids","GANG TERRITORY","THREAT / STREETS / TENSION","danger","HOMt0qKIoYc"],
-    ["stealth","CORPO INFILTRATION","SUSPENSE / DARK ELECTRONICS","danger","4W_WW2Yase4"],
-    ["evac","HIGH-SPEED GETAWAY","TACTICAL / PRESSURE / MOTION","danger","255tviwqYCA"]
+    ["evac","BEHIND THE BLACK WALL","DARK AMBIENT MUSIC / TEAFORONE","danger","255tviwqYCA"]
   ];
   const oldCategory = {night:"streets",apartment:"interiors",club:"nightlife",combat:"danger",badlands:"outskirts",downtown:"streets"};
   for (const [id,name,hint,category,vid] of atlas) {
@@ -61,6 +50,14 @@
   for (const [id] of atlas) {
     const value=stored[id];
     urls[id]=Array.isArray(value)?value:(typeof value==="string"&&value?[value]:[]);
+  }
+  // Retire misleading/duplicate built-ins without deleting anyone's saved links.
+  const retired={bazaar:['BLACK MARKET','streets'],westbrook:['WESTBROOK','streets'],dogtown:['DOGTOWN','streets'],waterfront:['WATERFRONT','streets'],server:['SERVER ROOM','interiors'],medtech:['MEDTECH LAB','interiors'],clubexterior:['OUTSIDE THE CLUB','nightlife'],powerstation:['ABANDONED STATION','outskirts'],wasteland:['WASTELAND','outskirts'],raids:['GANG TERRITORY','danger'],stealth:['CORPO INFILTRATION','danger']};
+  for(const [id,[name,category]] of Object.entries(retired)){
+    const value=stored[id];const saved=Array.isArray(value)?value:(typeof value==='string'&&value?[value]:[]);
+    if(!saved.length)continue;
+    presets.push({id,name:name+' (SAVED)',code:'AMBIENCE: '+id.toUpperCase(),hint:'YOUR SAVED SOURCES',category});
+    urls[id]=saved;ORIGINAL_TRACKS[id]=[];ADDITIONAL_TRACKS[id]=[];
   }
   const grid=document.getElementById("presetGrid");
   if (!grid) return;

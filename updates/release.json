@@ -1,4 +1,4 @@
 {
-  "version": "10.0.6",
-  "notes": "Voice Only and Ambience Only now navigate to dedicated full-page views. Both uses a side-by-side layout with ambience on the left and voice on the right. Replaces the pink theme with dark charcoal, cyan trim, and red accents based on the supplied HUD reference; adds a small Arasaka header emblem. Voice profiles collapse into a configuration section. Updates remains visible in every view with access to the existing verified installer and rollback controls."
+  "version": "10.0.7",
+  "notes": "Bug: hidden notice covered the player; cue-based playback stalled. Fix: hide notices correctly, load playback directly, queue early clicks, and retry unavailable sources. Audited YouTube titles and embed permissions; removed duplicate/misleading cards and a private video. High-Speed Getaway renamed Behind the Black Wall. Original and saved user links preserved."
 }

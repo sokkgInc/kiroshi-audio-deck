@@ -12,6 +12,10 @@
   document.body.classList.add('page-deck');
   document.body.classList.toggle('embedded-deck',embedded);
   document.body.dataset.deckMode=embedded?'both':mode;
+  if(embedded){
+    const measure=()=>window.parent.postMessage({type:'kiroshi-content-height',height:Math.ceil(document.querySelector('main').getBoundingClientRect().height)+8},'http://127.0.0.1:3131');
+    new ResizeObserver(measure).observe(document.querySelector('main'));window.addEventListener('load',measure);
+  }
   if(!embedded)localStorage.setItem('kiroshiAudioDeckModeV10',mode);
   const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=voice?'/deck-pages.css':'deck-pages.css';document.head.append(sheet);
   const emblem=document.createElement('div');emblem.className='arasaka';emblem.setAttribute('aria-label','Arasaka');
@@ -30,6 +34,7 @@
   },true);
   if(voice){
     const frame=document.getElementById('ambienceFrame');if(frame)frame.src='http://127.0.0.1:48721/#embed=1';
+    window.addEventListener('message',event=>{if(event.origin!=='http://127.0.0.1:48721'||event.source!==frame?.contentWindow)return;const data=event.data;if(data?.type==='kiroshi-content-height'&&Number.isFinite(data.height))frame.style.height=Math.min(20000,Math.max(300,data.height))+'px';});
     const root=document.querySelector('.deck-root');
     const voiceDeck=document.getElementById('voiceDeck'),ambienceDeck=document.getElementById('ambienceDeck');
     const workspace=document.createElement('div');workspace.className='page-workspace';root.insertBefore(workspace,voiceDeck);workspace.append(ambienceDeck,voiceDeck);

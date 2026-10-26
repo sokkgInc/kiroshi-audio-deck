@@ -18,11 +18,10 @@ const ORIGINAL_TRACKS = {
 };
 // Curated tracks are additions only.  In particular, none of these replaces the original Combat link.
 const ADDITIONAL_TRACKS = {
-  night:['https://www.youtube.com/watch?v=jneNUnOHetw','https://www.youtube.com/watch?v=iNq7OmoER_s'],
+  night:['https://www.youtube.com/watch?v=hKq7kqtS9ts'],
   apartment:['https://www.youtube.com/watch?v=a4Etm90iymM','https://www.youtube.com/watch?v=cZVoLSfys6g','https://youtu.be/LLBCDkq4QjE','https://www.youtube.com/watch?v=yBoG91xuEpQ','https://www.youtube.com/watch?v=pCo1g5NQAqc'],
   club:[],
   combat:[
-    'https://youtu.be/255tviwqYCA',
     'https://www.youtube.com/watch?v=gbgbvMMsySA',
     'https://www.youtube.com/watch?v=b0Qos1GemwA'
   ],
@@ -32,11 +31,14 @@ const ADDITIONAL_TRACKS = {
 const STORE = 'nightCityAmbianceAdditionalUrlsV4';
 const LEGACY_STORE = 'nightCityAmbianceUrlsV3';
 function readStoredLinks() {
-  const stored = JSON.parse(localStorage.getItem(STORE) || localStorage.getItem(LEGACY_STORE) || '{}');
-  return Object.fromEntries(presets.map(p => [p.id, Array.isArray(stored[p.id]) ? stored[p.id] : (stored[p.id] ? [stored[p.id]] : [])]));
+  let stored={};try{stored=JSON.parse(localStorage.getItem(STORE)||localStorage.getItem(LEGACY_STORE)||'{}')||{}}catch{}
+  return {...stored,...Object.fromEntries(presets.map(p => [p.id, Array.isArray(stored[p.id]) ? stored[p.id] : (stored[p.id] ? [stored[p.id]] : [])]))};
 }
 let urls = readStoredLinks();
 let player, playerReady = false, current = presets[0], desiredVolume = 55, fadeTimer, pendingRandomPlay;
+let pendingRandomSeek=false, playWhenReady=false;
+let activeTarget;
+const failedVideos=new Set();
 const $ = s => document.querySelector(s);
 
 function videoTarget(raw) {
@@ -51,9 +53,9 @@ function videoTarget(raw) {
 }
 function setStatus(text) { $('#status').textContent = text; setTimeout(() => { $('#status').textContent = 'LINKS SAVED LOCALLY'; }, 2600); }
 function showPlayerNotice(text) { $('#playerNotice').textContent = text; $('#playerNotice').hidden = false; }
-function sourcePool(id) { return [...new Set([...ORIGINAL_TRACKS[id], ...urls[id], ...ADDITIONAL_TRACKS[id]])]; }
+function sourcePool(id) { return [...new Set([...(ORIGINAL_TRACKS[id]||[]), ...(urls[id]||[]), ...(ADDITIONAL_TRACKS[id]||[])])]; }
 function randomTarget(id) {
-  const choices = sourcePool(id).map(videoTarget).filter(Boolean);
+  const choices = sourcePool(id).map(videoTarget).filter(target=>target&&!failedVideos.has(target.videoId));
   return choices.length ? choices[Math.floor(Math.random() * choices.length)] : null;
 }
 function randomStart(duration) {
@@ -62,9 +64,13 @@ function randomStart(duration) {
   return safeEnd > 45 ? 20 + Math.floor(Math.random() * (safeEnd - 20)) : 0;
 }
 function queueRandomPlayback(target) {
+  activeTarget=target;
+  clearInterval(fadeTimer);
+  $('#playerNotice').hidden=true;
   if (target.list) { player.loadPlaylist({ list:target.list, listType:'playlist' }); return; }
-  pendingRandomPlay = target;
-  player.cueVideoById(target.videoId);
+  pendingRandomPlay = null;
+  pendingRandomSeek=true;
+  player.loadVideoById({videoId:target.videoId,startSeconds:0});
 }
 function renderPresets() {
   $('#presetGrid').innerHTML = presets.map(p => `<button type="button" class="preset ${p.id===current.id?'active':''}" data-id="${p.id}"><b>${p.name}</b><small>${p.hint}</small></button>`).join('');
@@ -77,8 +83,12 @@ function updateScene() {
   renderPresets();
 }
 function selectPreset(preset, autoplay = false) {
+  playWhenReady=autoplay;
+  pendingRandomSeek=false;
+  clearInterval(fadeTimer);
   current = preset; updateScene();
   const target = randomTarget(preset.id);
+  activeTarget=target;
   if (!target) { showPlayerNotice(`No YouTube link saved for ${preset.name}. Use EDIT YOUTUBE LINKS.`); if (playerReady) player.stopVideo(); $('#playText').textContent = 'PLAY'; return; }
   $('#playerNotice').hidden = true;
   if (playerReady) {
@@ -90,27 +100,33 @@ function selectPreset(preset, autoplay = false) {
 }
 window.onYouTubeIframeAPIReady = () => {
   player = new YT.Player('ytPlayer', { height:'100%', width:'100%', playerVars:{ autoplay:0, controls:1, rel:0, modestbranding:1, origin:window.location.origin }, events:{
-    onReady: e => { playerReady = true; e.target.setVolume(desiredVolume); selectPreset(current); },
+    onReady: e => { playerReady = true; e.target.setVolume(desiredVolume); selectPreset(current,playWhenReady); },
     onStateChange: e => {
-      if (e.data === YT.PlayerState.CUED && pendingRandomPlay) {
-        const target = pendingRandomPlay;
-        pendingRandomPlay = null;
-        player.loadVideoById({ videoId:target.videoId, startSeconds:randomStart(player.getDuration()) });
-        return;
+      if(e.data===YT.PlayerState.PLAYING){
+        $('#playerNotice').hidden=true;
+        if(pendingRandomSeek){pendingRandomSeek=false;const duration=player.getDuration();if(duration>90)player.seekTo(randomStart(duration),true);}
       }
       $('#playText').textContent = e.data === YT.PlayerState.PLAYING ? 'PAUSE' : 'PLAY';
       $('#playIcon').textContent = e.data === YT.PlayerState.PLAYING ? 'Ⅱ' : '▶';
     },
     onError: e => {
+      pendingRandomSeek=false;
+      if([2,100,101,150].includes(e.data)){
+        const id=player.getVideoData()?.video_id||activeTarget?.videoId;if(id)failedVideos.add(id);
+        const alternative=randomTarget(current.id);
+        if(alternative&&alternative.videoId!==id){setStatus('SOURCE UNAVAILABLE — TRYING NEXT');queueRandomPlayback(alternative);return;}
+      }
       const messages = { 2:'YouTube rejected this link. Check the URL.', 5:'This video cannot play in the embedded player.', 100:'This video is unavailable.', 101:'The video owner has disabled embedding.', 150:'The video owner has disabled embedding.', 153:'YouTube requires the local launcher—close this page and use Start Night City HUD.cmd.' };
       showPlayerNotice(messages[e.data] || `YouTube player error ${e.data}. Try a different public video.`);
       setStatus(`YOUTUBE ERROR ${e.data}`);
-    }
+    },
+    onAutoplayBlocked:()=>{pendingRandomSeek=false;setStatus('PRESS PLAY IN THE YOUTUBE PLAYER');$('#playerNotice').hidden=true;}
   }});
 };
 $('#playPause').onclick = () => {
   const target = randomTarget(current.id);
-  if (!playerReady || !target) return setStatus('ADD A YOUTUBE LINK FIRST');
+  if(!target)return setStatus('NO AVAILABLE SOURCE — ADD ANOTHER LINK');
+  if(!playerReady){playWhenReady=true;return setStatus('YOUTUBE IS LOADING — PLAY QUEUED');}
   const state = player.getPlayerState();
   if (state === YT.PlayerState.PLAYING) player.pauseVideo();
   else {

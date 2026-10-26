@@ -1,4 +1,5 @@
 /* Page views: charcoal glass, cyan circuitry and red hardware accents. */
+.embedded-deck{overflow:hidden!important;min-height:0!important}
 :root{--bg:#03090c;--panel:#061217;--ink:#d8e9ed;--muted:#73939f;--line:#20424d;--hot:#00d5df;--cyan:#64e5ec;--danger:#ed4c60;--red:#ed4c60;--bright:#61e8ef;--dim:#294a55;--text:#d8e9ed}
 html{min-height:100%;background:#03090c}body.page-deck{margin:0;padding:0 0 70px;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#0a2028 0,transparent 60%),#03090c;color:#d8e9ed;font-family:Bahnschrift,'Segoe UI',sans-serif}body.page-deck::before{background-image:linear-gradient(#18323b33 1px,transparent 1px),linear-gradient(90deg,#18323b33 1px,transparent 1px);background-size:70px 70px;opacity:.2}
 .page-deck main.deck-root,.page-deck main.hud{width:100%;max-width:none;min-height:100vh;margin:0;padding:18px 22px;border:0;box-shadow:none;background:transparent;backdrop-filter:none}
