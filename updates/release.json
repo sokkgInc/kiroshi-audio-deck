@@ -1,4 +1,4 @@
 {
-  "version": "10.0.7",
-  "notes": "Bug: hidden notice covered the player; cue-based playback stalled. Fix: hide notices correctly, load playback directly, queue early clicks, and retry unavailable sources. Audited YouTube titles and embed permissions; removed duplicate/misleading cards and a private video. High-Speed Getaway renamed Behind the Black Wall. Original and saved user links preserved."
+  "version": "10.0.8",
+  "notes": "Refined Arasaka emblem with cleaner geometry and metallic red detail. Added translucent HUD layers, subtle grid, clipped corners, and red brackets inspired by the supplied Kiroshi HUD. Panel Opacity slider adjusts transparency and remembers the choice across views. Full-page navigation, side-by-side Both, and Updates retained."
 }
