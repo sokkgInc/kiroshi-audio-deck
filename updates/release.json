@@ -1,4 +1,4 @@
 {
-  "version": "10.0.1",
-  "notes": "Kiroshi Audio Deck v10.0.1 removes the floating boxed-shell treatment. Both decks now run edge-to-edge, and the Voice Only / Ambience Only / Both selector is a full-width, high-visibility mode rail. Existing audio engines and saved settings are unchanged."
+  "version": "10.0.2",
+  "notes": "Kiroshi Audio Deck v10.0.2 adds three curated interior ambience scenes: Cyber Cafe, Rainy Control Room, and Neon City Loft. The scene matrix now uses a denser responsive card grid so the growing library remains cohesive on desktop and mobile."
 }

@@ -6,6 +6,7 @@
 .atlas-filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .atlas-filter{cursor:pointer;background:#102630;color:#a3c6cd;border:1px solid #30545f;padding:8px 9px;min-height:35px;letter-spacing:.065em;font:700 .60rem "Bahnschrift","Segoe UI",sans-serif}.atlas-filter:hover{border-color:#74dfe3;color:#e8ffff}.atlas-filter.selected{background:#174851;color:#eafcfc;border-color:#72dcde;box-shadow:inset 2px 0 #76e8e3,0 0 16px #49dfe426}
 .atlas-empty{margin:10px 0 0;color:#a7bfca;font-size:.72rem}
+.preset-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.preset{min-height:72px;padding:13px 12px;background:linear-gradient(145deg,#0c1b22,#0b1118);border-color:#24434d}.preset b{font-size:.69rem}.preset small{font-size:.51rem;line-height:1.35}@media(max-width:920px){.preset-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:650px){.preset-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.preset{min-height:68px;padding:11px}}
 .atlas-editor-search{width:100%;margin:15px 0 0;font-size:.8rem}
 .preset:focus-visible,.atlas-filter:focus-visible{outline:2px solid #8beded;outline-offset:2px}
 @media(max-width:760px){.atlas-toolbar{padding:9px}.atlas-top{align-items:stretch}.atlas-search{flex:1 1 100%}.atlas-search input{min-width:0;flex:1;width:100%}.atlas-filter{font-size:.58rem;padding:7px 8px}}
