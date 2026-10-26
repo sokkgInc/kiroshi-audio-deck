@@ -1,13 +1,13 @@
 (()=>{
   'use strict';
   const voice=location.port==='3131';
-  const query=new URLSearchParams(location.search);
+  const query=new URLSearchParams(location.hash.slice(1));
   const embedded=query.get('embed')==='1';
   const requested=query.get('mode');
   const valid=m=>['voice','ambience','both'].includes(m);
   const saved=localStorage.getItem('kiroshiAudioDeckModeV10');
   const mode=valid(requested)?requested:(voice?(valid(saved)?saved:'both'):'ambience');
-  const urlFor=m=>m==='ambience'?'http://127.0.0.1:48721/?mode=ambience':'http://127.0.0.1:3131/?mode='+m;
+  const urlFor=m=>m==='ambience'?'http://127.0.0.1:48721/#mode=ambience':'http://127.0.0.1:3131/#mode='+m;
   if(!embedded&&voice&&mode==='ambience'){location.replace(urlFor(mode));return;}
   document.body.classList.add('page-deck');
   document.body.classList.toggle('embedded-deck',embedded);
@@ -26,10 +26,10 @@
     localStorage.setItem('kiroshiAudioDeckModeV10',next);
     if(typeof stopSpeechForMode==='function')stopSpeechForMode();
     if(!voice&&typeof playerReady!=='undefined'&&playerReady)player.pauseVideo();
-    location.assign(urlFor(next));
+    const target=urlFor(next);if(new URL(target).origin===location.origin){location.hash='mode='+next;location.reload();}else location.assign(target);
   },true);
   if(voice){
-    const frame=document.getElementById('ambienceFrame');if(frame)frame.src='http://127.0.0.1:48721/?embed=1';
+    const frame=document.getElementById('ambienceFrame');if(frame)frame.src='http://127.0.0.1:48721/#embed=1';
     const root=document.querySelector('.deck-root');
     const voiceDeck=document.getElementById('voiceDeck'),ambienceDeck=document.getElementById('ambienceDeck');
     const workspace=document.createElement('div');workspace.className='page-workspace';root.insertBefore(workspace,voiceDeck);workspace.append(ambienceDeck,voiceDeck);
@@ -37,6 +37,6 @@
     if(settings){const details=document.createElement('details');details.className='voice-profiles';details.innerHTML='<summary>VOICE PROFILES &amp; TUNING <span>CONFIGURE ＋</span></summary>';settings.before(details);details.append(settings);}
     if(query.get('updates')==='1')document.getElementById('updatesOpen')?.click();
   }else if(!embedded){
-    const button=document.getElementById('updateButton');if(button){button.textContent='UPDATES';button.className='update-launch';button.id='ambienceUpdatesOpen';button.replaceWith(button.cloneNode(true));document.getElementById('ambienceUpdatesOpen').onclick=()=>location.assign('http://127.0.0.1:3131/?mode=voice&updates=1');}
+    const button=document.getElementById('updateButton');if(button){button.textContent='UPDATES';button.className='update-launch';button.id='ambienceUpdatesOpen';button.replaceWith(button.cloneNode(true));document.getElementById('ambienceUpdatesOpen').onclick=()=>location.assign('http://127.0.0.1:3131/#mode=voice&updates=1');}
   }
 })();
