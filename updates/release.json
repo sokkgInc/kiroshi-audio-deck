@@ -1,4 +1,4 @@
 {
-  "version": "10.0.4",
-  "notes": "Restores the original verified updater controls: Check for Updates, Install Update, and Roll Back. The Updates button stays visible at the bottom right in every deck mode, independently of the audio panels. Uses the existing local updater service and installed version metadata. Includes the previously published scene additions."
+  "version": "10.0.5",
+  "notes": "Voice Only and Ambience Only now navigate to dedicated full-page views. Both uses a side-by-side layout with ambience on the left and voice on the right. Replaces the pink theme with dark charcoal, cyan trim, and red accents based on the supplied HUD reference; adds a small Arasaka header emblem. Voice profiles collapse into a configuration section. Updates remains visible in every view with access to the existing verified installer and rollback controls."
 }
