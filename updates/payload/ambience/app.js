@@ -19,7 +19,7 @@ const ORIGINAL_TRACKS = {
 // Curated tracks are additions only.  In particular, none of these replaces the original Combat link.
 const ADDITIONAL_TRACKS = {
   night:['https://www.youtube.com/watch?v=jneNUnOHetw','https://www.youtube.com/watch?v=iNq7OmoER_s'],
-  apartment:['https://www.youtube.com/watch?v=a4Etm90iymM','https://www.youtube.com/watch?v=cZVoLSfys6g','https://youtu.be/LLBCDkq4QjE','https://www.youtube.com/watch?v=yBoG91xuEpQ'],
+  apartment:['https://www.youtube.com/watch?v=a4Etm90iymM','https://www.youtube.com/watch?v=cZVoLSfys6g','https://youtu.be/LLBCDkq4QjE','https://www.youtube.com/watch?v=yBoG91xuEpQ','https://www.youtube.com/watch?v=pCo1g5NQAqc'],
   club:[],
   combat:[
     'https://youtu.be/255tviwqYCA',

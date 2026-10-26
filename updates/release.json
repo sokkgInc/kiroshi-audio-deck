@@ -1,4 +1,4 @@
 {
-  "version": "10.0.2",
-  "notes": "Kiroshi Audio Deck v10.0.2 adds three curated interior ambience scenes: Cyber Cafe, Rainy Control Room, and Neon City Loft. The scene matrix now uses a denser responsive card grid so the growing library remains cohesive on desktop and mobile."
+  "version": "10.0.3",
+  "notes": "Kiroshi Audio Deck v10.0.3 keeps the Cyber Cafe and Rainy Control Room scene cards, while folding the Neon City Loft source into the existing Apartment scene pool. The responsive denser scene matrix remains in place."
 }
