@@ -1,0 +1,20 @@
+/* Only the maintenance control; the original Audio Deck theme is unchanged. */
+#updatesOpen{position:fixed;right:24px;bottom:24px;z-index:1000;display:block!important;visibility:visible!important;min-height:44px;padding:12px 20px;border:1px solid #78dce1;box-shadow:0 4px 20px #000b;font-size:12px}#updatesDialog{z-index:1001}body{padding-bottom:70px}
+.update-launch{font:600 10px/1.3 Arial,sans-serif;letter-spacing:.14em;color:#78dce1;background:#0d222d;border:1px solid #1c6574;border-radius:2px;padding:8px 12px;cursor:pointer}
+.update-launch:hover{border-color:#70d6df;background:#15313d}
+#updatesDialog{width:min(550px,calc(100vw - 24px));max-height:90vh;overflow:auto;color:#e1eef2;background:#0c151e;border:1px solid #2b6b78;box-shadow:0 18px 70px #000e;padding:24px;font:14px/1.5 Arial,sans-serif}
+#updatesDialog::backdrop{background:#000c}
+#updatesDialog h2{margin:2px 0 10px;font:600 21px Arial,sans-serif;letter-spacing:.11em;color:#edf7fa}
+#updatesDialog .up-label{font:600 10px Arial,sans-serif;letter-spacing:.16em;color:#55cdd7}
+#updatesDialog p{margin:8px 0 14px;color:#a1b7c2;font-size:13px}
+#updatesDialog label{display:grid;gap:7px;margin:18px 0 10px;font-size:12px;color:#91dbe4;letter-spacing:.05em}
+#updatesRepo{display:block;width:100%;padding:11px 12px;background:#152632;border:1px solid #355965;border-radius:2px;color:#f1f6f8;font:14px Arial,sans-serif}
+#updatesDialog .up-row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+#updatesDialog button{cursor:pointer;border:1px solid #417888;background:#152b35;color:#def6f9;padding:10px 13px;font:600 11px Arial,sans-serif;letter-spacing:.06em}
+#updatesDialog button:disabled{opacity:.35;cursor:not-allowed}
+#updatesDialog #updatesInstall{background:#217985;color:#f4ffff;border-color:#52cbd5}
+#updatesDialog #updatesRollback{background:#2d1720;border-color:#723c47;color:#ffcad0}
+#updatesDialog #updatesClose{margin-left:auto}
+#updatesNotes{white-space:pre-wrap;overflow-wrap:anywhere;max-height:180px;overflow:auto;color:#b3cbd1;border-top:1px solid #29505a;padding:12px 0;margin-top:14px;font:12px/1.5 Arial,sans-serif}
+#updatesMessage{margin-top:12px;color:#79d7df;font-size:12px;min-height:1.8em}
+#updatesMessage[data-error="true"]{color:#ff8490}
