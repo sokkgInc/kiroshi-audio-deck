@@ -1,4 +1,4 @@
 {
-  "version": "10.0.8",
-  "notes": "Refined Arasaka emblem with cleaner geometry and metallic red detail. Added translucent HUD layers, subtle grid, clipped corners, and red brackets inspired by the supplied Kiroshi HUD. Panel Opacity slider adjusts transparency and remembers the choice across views. Full-page navigation, side-by-side Both, and Updates retained."
+  "version": "10.0.9",
+  "notes": "Shrinks the ambience video player to a compact 384 x 216 area, aligned left. Adds restrained red accents to the active mode, section markers, configuration control, and input trim. Retains the approved glass HUD, side-by-side layout, and Updates controls."
 }

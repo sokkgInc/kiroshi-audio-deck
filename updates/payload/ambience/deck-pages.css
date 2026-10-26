@@ -1,4 +1,11 @@
 /* Page views: charcoal glass, cyan circuitry and red hardware accents. */
+/* Compact 384 x 216 player and a restrained second pass of red hardware accents. */
+.page-deck.page-deck .player-shell{width:min(100%,384px);height:216px;min-height:200px;max-height:216px;aspect-ratio:auto;margin:16px 0 20px;border-top-color:#ba4358;border-right-color:#34515c}
+.page-deck.page-deck .deck-mode button.active,.page-deck.page-deck .mode-switch button.active{box-shadow:inset 0 -2px #e05268!important}
+.page-deck.page-deck .masthead,.page-deck.page-deck .topbar{border-top:1px solid #7d344855}
+body.page-deck.page-deck .panel-title{border-left:2px solid #bd4359;padding-left:10px}.page-deck.page-deck .voice-profiles summary span{color:#e57082}
+.page-deck.page-deck .section-heading{position:relative}.page-deck.page-deck .section-heading::after{content:'';position:absolute;bottom:-1px;left:0;width:44px;height:2px;background:#e05268}
+body.page-deck.page-deck #source{border-bottom-color:#8c3b4e}.page-deck.page-deck .atlas-kicker strong{color:#e5687b}.page-deck.page-deck .atlas-filter.selected{border-bottom-color:#cb4e64}
 /* Optical glass pass: translucent layers reveal the shared HUD grid. */
 html:root{background:radial-gradient(ellipse at 0 0,#13313b66,transparent 52%),radial-gradient(ellipse at 100% 80%,#4c122335,transparent 48%),repeating-linear-gradient(135deg,transparent 0 21px,#83c5d50b 21px 22px),linear-gradient(#76b7c20a 1px,transparent 1px),linear-gradient(90deg,#76b7c20a 1px,transparent 1px),#03090d;background-size:auto,auto,auto,32px 32px,32px 32px,auto;background-attachment:fixed}
 body.page-deck.page-deck{background:transparent}.page-deck.page-deck::before{display:none}.page-deck.page-deck::after{opacity:.045}.page-deck.page-deck .masthead,.page-deck.page-deck .topbar{background:rgba(7,15,21,.25);border-bottom-color:#27515c}
