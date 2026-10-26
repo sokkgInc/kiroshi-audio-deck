@@ -166,3 +166,23 @@ window.addEventListener('message', event => {
   if (data && data.type === 'kiroshi-deck-mode') applyDeckMode(data.mode);
 });
 applyDeckMode(localStorage.getItem(MODE_KEY) || 'both', false);
+
+const RELEASE_VERSION = '10.0.1';
+const RELEASE_API = 'https://api.github.com/repos/sokkgInc/kiroshi-audio-deck/releases/latest';
+function versionParts(version) { return String(version).replace(/^v/, '').split('.').map(Number); }
+function isNewerVersion(remote, local) { const a=versionParts(remote), b=versionParts(local); return a.some((n,i)=>n>(b[i]||0)) && !a.some((n,i)=>n<(b[i]||0)); }
+const updateButton = document.getElementById('updateButton');
+if (updateButton) updateButton.addEventListener('click', async () => {
+  updateButton.disabled = true; updateButton.textContent = 'CHECKING…';
+  try {
+    const response = await fetch(RELEASE_API, { headers: { accept: 'application/vnd.github+json' } });
+    const release = await response.json(); if (!response.ok) throw new Error('Release check unavailable');
+    if (isNewerVersion(release.tag_name, RELEASE_VERSION)) {
+      const asset=(release.assets||[]).find(item=>item.name==='Kiroshi_Audio_Deck_Update.zip');
+      if (!asset) throw new Error('Update package unavailable');
+      updateButton.textContent='DOWNLOAD '+release.tag_name.toUpperCase(); updateButton.onclick=()=>window.open(asset.browser_download_url,'_blank','noopener');
+      setStatus('UPDATE '+release.tag_name.toUpperCase()+' READY');
+    } else { updateButton.textContent='UP TO DATE'; setStatus('KIROSHI '+RELEASE_VERSION+' IS CURRENT'); }
+  } catch { updateButton.textContent='RETRY UPDATE CHECK'; setStatus('UPDATE CHECK UNAVAILABLE'); }
+  finally { updateButton.disabled = false; }
+});

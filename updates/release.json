@@ -1,4 +1,4 @@
 {
-  "version": "10.0.0",
-  "notes": "Kiroshi Audio Deck v10 restores a complete updater payload: the ambience frontend now includes every referenced base file, rather than only an overlay. Adds persistent Voice Only, Ambience Only, and Both modes that pause the engine being left behind; the voice deck continues to use the existing local Cartesia service and the ambience deck continues to use the existing YouTube player. The original Club link and locally saved user URLs are retained; the extra music-only Club URL was removed. Visuals receive a refined teal/red Kiroshi HUD pass."
+  "version": "10.0.1",
+  "notes": "Kiroshi Audio Deck v10.0.1 removes the floating boxed-shell treatment. Both decks now run edge-to-edge, and the Voice Only / Ambience Only / Both selector is a full-width, high-visibility mode rail. Existing audio engines and saved settings are unchanged."
 }
