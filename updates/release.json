@@ -1,4 +1,4 @@
 {
-  "version": "10.0.10",
-  "notes": "Manage Scene Links saves additions, removals, replacements, and cleared scenes across refreshes and app updates in this browser. Ambience starts at 28%. Scene changes fade down for 450ms, then fade the new source up over 700ms. Rapid selections cancel the previous transition."
+  "version": "10.0.11",
+  "notes": "Renames the main ambience heading and page title to Cyberpunk Sounds."
 }
