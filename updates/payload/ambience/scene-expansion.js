@@ -21,6 +21,7 @@
     ["judyapt","RAINY APARTMENT","WINDOW RAIN / INDOORS / REST","interiors","NXfcw3HHd-c"],
     ["cybercafe","CYBER CAFE","NEON RAIN / QUIET TABLES / DEEP REST","interiors","5QH6iPGN1OQ"],
     ["controlroom","RAINY CONTROL ROOM","CONSOLE HUM / STORM / FOCUS","interiors","878qiuOtQM4"],
+    ["arcade","ARCADE","MACHINES / BEEPS / CROWD MURMUR","interiors","iMi7MC6ntpk","wpq1D3Jayvc","9hyvP37QZUE"],
     ["hacker","NETRUNNER DEN","STATIC / TERMINALS / ELECTRONICS","interiors","4W_WW2Yase4"],
     ["hideout","HIDDEN SAFEHOUSE","QUIET / SCREENS / CITY RAIN","interiors","CKpSc0LB3DI"],
     ["skybridge","SKYBRIDGE DRONE","SYNTHWAVE / CALM DRONE / SLEEP","interiors","Eq2uAtvHQ3c"],
@@ -37,11 +38,11 @@
     ["evac","BEHIND THE BLACK WALL","DARK AMBIENT MUSIC / TEAFORONE","danger","255tviwqYCA"]
   ];
   const oldCategory = {night:"streets",apartment:"interiors",club:"nightlife",combat:"danger",badlands:"outskirts",downtown:"streets"};
-  for (const [id,name,hint,category,vid] of atlas) {
+  for (const [id,name,hint,category,...videoIds] of atlas) {
     if (presets.some(p=>p.id===id)) continue;
     presets.push({id,name,code:"AMBIENCE: "+id.toUpperCase(),hint,category});
     ORIGINAL_TRACKS[id] = [];
-    ADDITIONAL_TRACKS[id] = ["https://www.youtube.com/watch?v="+vid];
+    ADDITIONAL_TRACKS[id] = videoIds.map(vid=>"https://www.youtube.com/watch?v="+vid);
   }
   for (const p of presets) p.category ||= oldCategory[p.id] || "streets";
   // readStoredLinks() ran before atlas was registered. Hydrate new preset links now.

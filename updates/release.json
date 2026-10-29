@@ -1,4 +1,4 @@
 {
-  "version": "10.0.11",
-  "notes": "Renames the main ambience heading and page title to Cyberpunk Sounds."
+  "version": "10.0.12",
+  "notes": "Adds Arcade under Interiors with three relevant YouTube sources: retro machines and talking, public arcade ambience, and a long Funspot recording. All three currently report playable and embeddable. Existing saved links, gentle scene fades, and 28% starting volume are retained."
 }
