@@ -1,5 +1,7 @@
 # Arcade sources
 
+Added 2026-10-31 at the user's request: [Arcade Sounds / Retro Video Game and Pinball Sound Effects — AmbientCat, 65 minutes](https://www.youtube.com/watch?v=fu6H-qbGOUI). YouTube reported playback status OK and embedding allowed. This recording includes arcade game music and sound effects; it has not been auditioned in the deck.
+
 Checked 2026-10-29: all three returned YouTube playback status OK and allow embedding. Selected for arcade-machine sounds and room ambience rather than a standalone music mix. Listening level remains controlled by the deck's volume slider (28% at startup).
 
 - [Retro Arcade Ambience / Machines beeping / Talking — Atmospheric Gaming, 3 hours](https://www.youtube.com/watch?v=iMi7MC6ntpk)
