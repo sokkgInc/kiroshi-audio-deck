@@ -6,12 +6,13 @@
 (()=>{
   "use strict";
   const groups = [
-    ["streets","STREETS"],["interiors","INTERIORS"],["nightlife","NIGHTLIFE"],
+    ["score","SOUNDTRACK"],["streets","STREETS"],["interiors","INTERIORS"],["nightlife","NIGHTLIFE"],
     ["transit","TRANSIT"],["outskirts","OUTSKIRTS"],["danger","HIGH ALERT"]
   ];
   // All URLs use identified public YouTube video IDs. Specific settings are atmosphere
   // selections, not claims that audio was recorded at a real-world location.
   const atlas = [
+    ["freeroam","FREE ROAM SCORE","IN-GAME EXPLORATION / AMBIENT SCORE","score","Nob9WhAl02k","mglVOJDhhbU","jneNUnOHetw"],
     ["kabuki","KABUKI MARKET","HAWKERS / BAZAAR / CHATTER","streets","NYHN6HUxKnQ"],
     ["japantown","JAPANTOWN","ADVERTS / FOOTSTEPS / AIR TRAFFIC","streets","JYc_cOvPfz4"],
     ["alley","RAINY ALLEYWAY","NIGHT CITY / RAIN / ALLEY","streets","ZNwtLMv5rrA"],
