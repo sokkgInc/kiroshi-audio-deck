@@ -1,4 +1,4 @@
 {
-  "version": "10.0.13",
-  "notes": "Adds your AmbientCat arcade sounds link to the Arcade scene. YouTube currently reports it playable and embeddable. Existing sources and saved user links are preserved."
+  "version": "10.0.14",
+  "notes": "Free Roam Score — new standalone Soundtrack scene for uninterrupted Cyberpunk 2077 exploration ambience. Includes three long-form YouTube mixes of the game’s ambient/exploration score; plays from the start, then selects a different mix when the current one finishes. Preserves every existing scene, the original Club source, saved links, Voice/Amibience/Both modes, and the Kiroshi HUD appearance. Audio remains streamed in the visible YouTube player; playback depends on YouTube availability and embed permissions."
 }
