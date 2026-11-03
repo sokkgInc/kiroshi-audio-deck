@@ -1,0 +1,41 @@
+name: Verify Ambience scenes and YouTube sources
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tests/ambience-smoke.cjs'
+      - 'tests/source-audit.py'
+      - '.github/workflows/verify-ambience.yml'
+      - 'updates/payload/ambience/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scene-behaviour:
+    name: Scene selection and playback regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate deployed JavaScript syntax
+        run: |
+          node --check updates/payload/ambience/app.js
+          node --check updates/payload/ambience/scene-expansion.js
+          node --check updates/payload/ambience/deck-pages.js
+      - name: Exercise every configured scene against mocked YouTube player
+        run: node tests/ambience-smoke.cjs
+      - name: Audit public YouTube video metadata (non-blocking)
+        if: success()
+        continue-on-error: true
+        run: python3 tests/source-audit.py
+      - name: Save source audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-audit-report
+          path: video-source-audit.json
+          if-no-files-found: ignore
+          retention-days: 14
