@@ -9,7 +9,7 @@ const sources = [
   ['night-city','jneNUnOHetw','freeroam'],
 ];
 (async()=>{
-  const browser = await chromium.launch({headless:true,args:['--no-sandbox','--autoplay-policy=no-user-gesture-required']});
+  const browser = await chromium.launch({headless:process.env.KIROSHI_HEADFUL!=='1',args:['--no-sandbox','--autoplay-policy=no-user-gesture-required']});
   const results=[];
   for(const [label,id,scene] of sources){
     const ctx=await browser.newContext({viewport:{width:1280,height:960},acceptDownloads:false});
