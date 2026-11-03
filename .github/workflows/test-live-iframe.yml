@@ -32,7 +32,7 @@ jobs:
           echo $! > /tmp/ambience.pid
           sleep 2
       - name: Try each Free Roam source in the embedded YouTube player
-        run: node tests/live-iframe.cjs
+        run: xvfb-run -a env KIROSHI_HEADFUL=1 node tests/live-iframe.cjs
       - name: Save screenshots and browser source report
         if: always()
         uses: actions/upload-artifact@v4
