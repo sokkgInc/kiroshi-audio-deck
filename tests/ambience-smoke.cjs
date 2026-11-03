@@ -10,6 +10,8 @@ function verify(name,fn){try{fn();checks.push({name,ok:true});console.log('PASS 
   catch(error){checks.push({name,ok:false,error:error.message});console.error('FAIL '+name+': '+error.stack)}}
 function run(saved={}){
   const nodes=new Map(),events={},history=[],storage={...saved};
+  const RealDate=Date; let virtualNow=RealDate.now();
+  class ClockDate extends RealDate{static now(){virtualNow+=1200;return virtualNow}}
   function element(id){
     return {id,textContent:'',innerHTML:'',value:'',style:{},hidden:false,dataset:{},
       addEventListener(type,cb){events[id+':'+type]=cb},
@@ -32,7 +34,7 @@ function run(saved={}){
   const YT={PlayerState:{UNSTARTED:-1,ENDED:0,PLAYING:1,PAUSED:2,CUED:5},Player:class{constructor(id,o){YT.events=o.events;return player}}};
   const window={parent:{},location:{origin:'http://127.0.0.1:48721'},addEventListener(){}};
   const timers=new Map();let nextTimer=1;
-  const context=vm.createContext({URL,document,localStorage,YT,window,console,
+  const context=vm.createContext({URL,document,localStorage,YT,window,console,Date:ClockDate,
     navigator:{clipboard:{writeText:async()=>{}}},
     setInterval:(fn)=>{const n=nextTimer++;timers.set(n,fn);return n},
     clearInterval:(id)=>timers.delete(id),
@@ -42,11 +44,12 @@ function run(saved={}){
   window.onYouTubeIframeAPIReady();
   YT.events.onReady({target:player});
   const value=expr=>vm.runInContext(expr,context);
+  const runTimers=()=>{for(let cycle=0;cycle<8&&timers.size;cycle++){for(const fn of Array.from(timers.values()))fn()}};
   return {context,document,storage,history,player,YT,value,
-    select:(id,autoplay=true)=>value('selectPreset(presets.find(p=>p.id==='+JSON.stringify(id)+'),'+Boolean(autoplay)+')'),
-    fire:(event)=>YT.events.onStateChange({data:event}),error:(code)=>YT.events.onError({data:code}),
+    select:(id,autoplay=true)=>{value('selectPreset(presets.find(p=>p.id==='+JSON.stringify(id)+'),'+Boolean(autoplay)+')');runTimers()},
+    fire:(event)=>{YT.events.onStateChange({data:event});runTimers()},error:(code)=>{YT.events.onError({data:code});runTimers()},
     onClick:(id)=>get(id).onclick?.(),
-    runTimers:()=>{for(const fn of Array.from(timers.values()))fn()}};
+    runTimers};
 }
 verify('HTML imports app, expansion, deck mode and YouTube API',()=>{
   for(const file of ['app.js','scene-expansion.js','deck-pages.js','youtube.com/iframe_api'])
