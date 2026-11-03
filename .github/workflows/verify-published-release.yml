@@ -1,0 +1,53 @@
+name: Verify Published Release Integrity
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-published-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the exact published release ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="$(python3 -c 'import json;print(json.load(open("updates/release.json"))["version"])')"
+          gh release download "v$VERSION" -p "Kiroshi_Audio_Deck_Update.zip" -D /tmp
+      - name: Verify GitHub SHA-256, ZIP integrity and deployed source fidelity
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,urllib.request,zipfile
+          repo=os.environ["GITHUB_REPOSITORY"]
+          version=json.loads(pathlib.Path("updates/release.json").read_text())["version"]
+          req=urllib.request.Request(f"https://api.github.com/repos/{repo}/releases/tags/v{version}",
+             headers={"Authorization":"Bearer "+os.environ["GH_TOKEN"],"Accept":"application/vnd.github+json"})
+          with urllib.request.urlopen(req,timeout=30) as res: release=json.load(res)
+          assets=[a for a in release["assets"] if a["name"]=="Kiroshi_Audio_Deck_Update.zip"]
+          assert len(assets)==1, "Expected exactly one update archive"
+          expected=assets[0].get("digest")
+          blob=pathlib.Path("/tmp/Kiroshi_Audio_Deck_Update.zip").read_bytes()
+          actual="sha256:"+hashlib.sha256(blob).hexdigest()
+          assert expected==actual, f"Digest mismatch: GitHub {expected}, downloaded {actual}"
+          with zipfile.ZipFile("/tmp/Kiroshi_Audio_Deck_Update.zip") as z:
+              assert z.testzip() is None, "ZIP has damaged entry"
+              names=set(z.namelist())
+              for name in ["ambience/app.js","ambience/scene-expansion.js","ambience/index.html"]:
+                  assert name in names, f"Missing deployed file {name}"
+                  local=pathlib.Path("updates/payload",name).read_bytes()
+                  assert z.read(name)==local, f"Published file differs from repository source: {name}"
+              assert "freeroam" in z.read("ambience/scene-expansion.js").decode()
+          print("PASS: published v"+version+" ZIP matches its GitHub SHA-256 digest")
+          print("PASS: ZIP integrity valid and Free Roam scripts match source")
+          print("PASS: exact built-in release verified")
+          PY
