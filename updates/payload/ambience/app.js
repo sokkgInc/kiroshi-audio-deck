@@ -118,9 +118,20 @@ window.onYouTubeIframeAPIReady = () => {
   player = new YT.Player('ytPlayer', { height:'100%', width:'100%', playerVars:{ autoplay:0, controls:1, rel:0, modestbranding:1, origin:window.location.origin }, events:{
     onReady: e => { playerReady = true; e.target.setVolume(desiredVolume); selectPreset(current,playWhenReady); },
     onStateChange: e => {
+      // Free Roam Score is a continuous music bed. Rotate the long-form sources
+      // when one finishes, without interrupting other scene presets.
+      if(e.data===YT.PlayerState.ENDED && current.id==='freeroam'){
+        const prior=activeTarget?.videoId;
+        const candidates=sourcePool('freeroam').map(videoTarget).filter(t=>t?.videoId&&!failedVideos.has(t.videoId));
+        if(!candidates.length){showPlayerNotice('No playable Free Roam Score sources. Use MANAGE SCENE LINKS to add another YouTube mix.');return;}
+        const other=candidates.filter(t=>t.videoId!==prior);
+        const pool=other.length?other:candidates;
+        transitionToTarget(pool[Math.floor(Math.random()*pool.length)]);
+        return;
+      }
       if(e.data===YT.PlayerState.PLAYING){
         $('#playerNotice').hidden=true;
-        if(pendingRandomSeek){pendingRandomSeek=false;const duration=player.getDuration();if(duration>90)player.seekTo(randomStart(duration),true);}
+        if(pendingRandomSeek){pendingRandomSeek=false;const duration=player.getDuration();if(duration>90 && current.id!=='freeroam')player.seekTo(randomStart(duration),true);}
         if(sceneTransition==='loading'){sceneTransition='in';fadePlayerTo(()=>desiredVolume,700,()=>{sceneTransition=null;});}
       }
       $('#playText').textContent = e.data === YT.PlayerState.PLAYING ? 'PAUSE' : 'PLAY';
